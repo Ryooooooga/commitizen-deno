@@ -21,7 +21,10 @@ const execute = async (_options: Options, args: string[]) => {
     throw new Error("not a git repository (or any of the parent directories)");
   }
 
-  if (await git.isClean() && !args.includes("--allow-empty")) {
+  const allowEmpty = args.includes("--allow-empty");
+  const amendCommit = args.includes("--amend");
+
+  if (await git.isClean() && !allowEmpty && !amendCommit) {
     throw new Error('nothing added to commit (use "git add")');
   }
 
