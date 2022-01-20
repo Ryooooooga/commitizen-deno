@@ -1,3 +1,5 @@
+import { parse } from "https://deno.land/std@0.119.0/encoding/yaml.ts";
+
 export type Config = {
   message: {
     items: FormItem[];
@@ -26,8 +28,26 @@ export type SelectOption = {
   description: string;
 };
 
+const configPath = () => {
+  const configDir = Deno.env.get("XDG_CONFIG_HOME") ??
+    `${Deno.env.get("HOME")}/.config`;
+  return `${configDir}/commitizen-deno/config.yaml`;
+};
+
 export const loadConfig = async () => {
-  return defaultConfig;
+  let content: string;
+  try {
+    content = await Deno.readTextFile(configPath());
+  } catch (_) {
+    return defaultConfig;
+  }
+
+  try {
+    return parse(content) as Config;
+  } catch (err) {
+    console.error(err);
+    return defaultConfig;
+  }
 };
 
 export const defaultConfig: Config = {
