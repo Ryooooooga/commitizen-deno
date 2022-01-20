@@ -1,15 +1,16 @@
 import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
 import * as dejs from "https://deno.land/x/dejs@0.10.2/mod.ts";
+import { cyan, stripColor } from "https://deno.land/std@0.121.0/fmt/colors.ts";
 import { loadConfig, SelectOption } from "./config.ts";
 import * as git from "./git.ts";
 import { input, select, Selection } from "./input.ts";
 
 const formSelections = (options: SelectOption[]): Selection[] => {
   const nameWidth = options
-    .reduce((w, x) => Math.max(w, x.name.length), 0);
+    .reduce((w, x) => Math.max(w, stripColor(x.name).length), 0);
 
   return options.map((x) => ({
-    text: `${x.name.padEnd(nameWidth)} ${x.description}`,
+    text: `${x.name.padEnd(nameWidth)} ${cyan(x.description)}`,
     value: x.name,
   }));
 };

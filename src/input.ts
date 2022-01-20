@@ -1,4 +1,8 @@
-import { green, red } from "https://deno.land/std@0.121.0/fmt/colors.ts";
+import {
+  green,
+  red,
+  stripColor,
+} from "https://deno.land/std@0.121.0/fmt/colors.ts";
 import { EXIT_CODE_ABORT, fzf } from "./fzf.ts";
 
 const displayDescription = (description: string) => {
@@ -85,7 +89,7 @@ export const select = async (
     const result = output.trimEnd();
     if (result.length > 0 || !required) {
       displayResult(result);
-      return selections.find((s) => s.text.trimEnd() === result);
+      return selections.find((s) => stripColor(s.text).trimEnd() === result);
     }
 
     if (first) {
