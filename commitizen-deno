@@ -1,0 +1,4 @@
+#!/usr/bin/env deno run --allow-run
+import { run } from "./src/cli.ts";
+
+await run();
