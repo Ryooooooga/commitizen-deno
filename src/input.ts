@@ -22,12 +22,14 @@ const displayResult = (message: string) => {
 export type InputOptions = {
   name: string;
   description: string;
+  prompt?: string;
   required: boolean;
 };
 
 export const input = async ({
   name,
   description,
+  prompt,
   required,
 }: InputOptions): Promise<string | undefined> => {
   displayDescription(description);
@@ -36,6 +38,7 @@ export const input = async ({
     const { code, output } = await fzf({
       height: 20,
       printQuery: true,
+      prompt,
     });
 
     if (code === EXIT_CODE_ABORT) {
@@ -62,6 +65,7 @@ export type Selection = {
 export type SelectOptions = {
   name: string;
   description: string;
+  prompt?: string;
   required: boolean;
 };
 
@@ -70,6 +74,7 @@ export const select = async (
   {
     name,
     description,
+    prompt,
     required,
   }: SelectOptions,
 ): Promise<Selection | undefined> => {
@@ -82,6 +87,7 @@ export const select = async (
     const { code, output } = await fzf({
       height: 20,
       cycle: true,
+      prompt,
     }, input);
 
     if (code === EXIT_CODE_ABORT) {

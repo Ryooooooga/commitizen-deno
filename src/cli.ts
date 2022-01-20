@@ -40,6 +40,7 @@ const execute = async (_options: Options, args: string[]) => {
         value = await input({
           name: item.name,
           description: item.description,
+          prompt: item.prompt,
           required: item.required ?? false,
         });
         break;
@@ -50,6 +51,7 @@ const execute = async (_options: Options, args: string[]) => {
           {
             name: item.name,
             description: item.description,
+            prompt: item.prompt,
             required: item.required ?? false,
           },
         );

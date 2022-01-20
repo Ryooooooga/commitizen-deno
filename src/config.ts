@@ -11,6 +11,7 @@ export type FormItem =
   & {
     name: string;
     description: string;
+    prompt?: string;
     required?: boolean;
   }
   & (
@@ -123,13 +124,14 @@ export const defaultConfig: Config = {
         form: "input",
       },
       {
-        name: "body",
+        name: "detail",
         description: "Provide a longer description of the change",
         form: "input",
       },
       {
         name: "breakingChange",
         description: "Describe the breaking changes if exist",
+        prompt: "BREAKING CHANGE > ",
         form: "input",
       },
       {
@@ -139,6 +141,6 @@ export const defaultConfig: Config = {
       },
     ],
     template:
-      "<%- prefix %><% if (scope) { %>(<%- scope %>)<% } %>: <%- subject %><% if (body) { %>\n\n<%- body %><% } %><% if (breakingChange) { %>\n\nBREAKING CHANGE: <%- breakingChange %><% } %><% if (issue) { %>\n\n<%- issue %><% } %>",
+      "<%- type %><% if (scope) { %>(<%- scope %>)<% } %>: <%- subject %><% if (detail) { %>\n\n<%- detail %><% } %><% if (breakingChange) { %>\n\nBREAKING CHANGE: <%- breakingChange %><% } %><% if (issue) { %>\n\n<%- issue %><% } %>",
   },
 };
