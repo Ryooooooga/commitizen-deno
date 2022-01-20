@@ -42,7 +42,7 @@ const buildPreviewCommand = async (
   const previewHeight = (previewText.match(/\n/g)?.length ?? 0) + 1;
 
   const placeholderPattern =
-    /\{([+sfn]*(\+?-?\d+(\.\.-?\d+)?(,\+?-?\d+(\.\.-?\d+)?)*)?|q)\}/g;
+    /\{([+sfn]*(-?\d+(\.\.-?\d+)?(,-?\d+(\.\.-?\d+)?)*)?|q)\}/g;
   const escapedPreviewText = shellEscape(previewText)
     .replace(placeholderPattern, "\\{$1}")
     .replace("\0", underline(`'${placeholder}'`));
