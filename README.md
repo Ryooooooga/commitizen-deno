@@ -7,8 +7,22 @@ Commitizen client powered by Deno and FZF
 - Deno
 - FZF
 
-## Configuration
+## Installation
 
+### Zinit
+
+```zsh
+# ~/.zshrc
+zinit wait lucid light-mode as'program' for 'Ryooooooga/commitizen-deno'
+```
+
+use as git subcommand:
+
+```sh
+git config --global alias.cz '!commitizen-deno --'
+```
+
+## Configuration
 
 ```yaml
 # ~/.config/commitizen-deno/.git-czrc
