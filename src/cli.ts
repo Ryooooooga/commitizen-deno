@@ -41,8 +41,12 @@ const buildPreviewCommand = async (
   const previewText = await dejs.renderToString(template, params);
   const previewHeight = (previewText.match(/\n/g)?.length ?? 0) + 1;
 
+  const placeholderPattern =
+    /\{([+sfn]*(\+?-?\d+(\.\.-?\d+)?(,\+?-?\d+(\.\.-?\d+)?)*)?|q)\}/g;
   const escapedPreviewText = shellEscape(previewText)
+    .replace(placeholderPattern, "\\{$1}")
     .replace("\0", underline(`'${placeholder}'`));
+
   const preview = `command printf '%s' ${escapedPreviewText}`;
 
   return { preview, previewHeight };
