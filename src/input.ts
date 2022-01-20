@@ -14,7 +14,9 @@ const displayError = (message: string) => {
 };
 
 const displayResult = (message: string) => {
-  console.log(message);
+  if (message.length > 0) {
+    console.log(message);
+  }
 };
 
 export type InputOptions = {
