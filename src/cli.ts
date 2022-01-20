@@ -1,11 +1,16 @@
 import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
 import * as dejs from "https://deno.land/x/dejs@0.10.2/mod.ts";
-import { cyan, stripColor } from "https://deno.land/std@0.121.0/fmt/colors.ts";
-import { loadConfig, SelectOption } from "./config.ts";
+import {
+  cyan,
+  stripColor,
+  underline,
+} from "https://deno.land/std@0.121.0/fmt/colors.ts";
+import shellEscape from "https://deno.land/x/shell_escape@1.0.0/single-argument.ts";
+import { FormItem, loadConfig, SelectOption } from "./config.ts";
 import * as git from "./git.ts";
 import { input, select, Selection } from "./input.ts";
 
-const formSelections = (options: SelectOption[]): Selection[] => {
+const buildSelections = (options: SelectOption[]): Selection[] => {
   const nameWidth = options
     .reduce((w, x) => Math.max(w, stripColor(x.name).length), 0);
 
@@ -13,6 +18,34 @@ const formSelections = (options: SelectOption[]): Selection[] => {
     text: `${x.name.padEnd(nameWidth)} ${cyan(x.description)}`,
     value: x.name,
   }));
+};
+
+const buildPreviewCommand = async (
+  template: string,
+  inProgressResults: { [K in string]: string },
+  formItems: FormItem[],
+  currentFormItem: FormItem,
+  placeholder: string,
+) => {
+  const dummyParams = formItems.reduce(
+    (params, item) => ({ ...params, [item.name]: "" }),
+    {},
+  );
+
+  const params = {
+    ...dummyParams,
+    ...inProgressResults,
+    [currentFormItem.name]: "\0",
+  };
+
+  const previewText = await dejs.renderToString(template, params);
+  const previewHeight = (previewText.match(/\n/g)?.length ?? 0) + 1;
+
+  const escapedPreviewText = shellEscape(previewText)
+    .replace("\0", underline(`'${placeholder}'`));
+  const preview = `command printf '%s' ${escapedPreviewText}`;
+
+  return { preview, previewHeight };
 };
 
 type Options = Record<never, never>;
@@ -37,21 +70,41 @@ const execute = async (_options: Options, args: string[]) => {
 
     switch (item.form) {
       case "input": {
+        const { preview, previewHeight } = await buildPreviewCommand(
+          config.message.template,
+          results,
+          config.message.items,
+          item,
+          "{q}",
+        );
+
         value = await input({
           name: item.name,
           description: item.description,
           prompt: item.prompt,
+          preview,
+          previewHeight,
           required: item.required ?? false,
         });
         break;
       }
       case "select": {
+        const { preview, previewHeight } = await buildPreviewCommand(
+          config.message.template,
+          results,
+          config.message.items,
+          item,
+          "{+1}",
+        );
+
         const result = await select(
-          formSelections(item.options),
+          buildSelections(item.options),
           {
             name: item.name,
             description: item.description,
             prompt: item.prompt,
+            preview,
+            previewHeight,
             required: item.required ?? false,
           },
         );

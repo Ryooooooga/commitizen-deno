@@ -6,6 +6,7 @@ export type FzfOptions = {
   height?: number;
   bind?: string;
   preview?: string;
+  previewWindow?: string;
   header?: string;
   prompt?: string;
   cycle?: boolean;
@@ -16,6 +17,7 @@ export const fzf = async ({
   height,
   bind,
   preview,
+  previewWindow,
   header,
   prompt,
   cycle,
@@ -36,6 +38,9 @@ export const fzf = async ({
   }
   if (preview !== undefined) {
     cmd.push("--preview", preview);
+  }
+  if (previewWindow !== undefined) {
+    cmd.push("--preview-window", previewWindow);
   }
   if (header !== undefined) {
     cmd.push("--header", header);
@@ -61,9 +66,7 @@ export const fzf = async ({
     stdout: "piped",
   });
 
-  if (input !== undefined) {
-    p.stdin?.write(new TextEncoder().encode(input));
-  }
+  p.stdin?.write(new TextEncoder().encode(input ?? "\n"));
   p.stdin?.close();
 
   const output = new TextDecoder().decode(await p.output());

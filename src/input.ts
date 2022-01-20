@@ -23,6 +23,8 @@ export type InputOptions = {
   name: string;
   description: string;
   prompt?: string;
+  preview?: string;
+  previewHeight?: number;
   required: boolean;
 };
 
@@ -30,15 +32,19 @@ export const input = async ({
   name,
   description,
   prompt,
+  preview,
+  previewHeight,
   required,
 }: InputOptions): Promise<string | undefined> => {
   displayDescription(description);
 
   for (let first = true;; first = false) {
     const { code, output } = await fzf({
-      height: 20,
+      height: 25,
       printQuery: true,
       prompt,
+      preview,
+      previewWindow: `up,${previewHeight}`,
     });
 
     if (code === EXIT_CODE_ABORT) {
@@ -66,6 +72,8 @@ export type SelectOptions = {
   name: string;
   description: string;
   prompt?: string;
+  preview?: string;
+  previewHeight?: number;
   required: boolean;
 };
 
@@ -75,6 +83,8 @@ export const select = async (
     name,
     description,
     prompt,
+    preview,
+    previewHeight,
     required,
   }: SelectOptions,
 ): Promise<Selection | undefined> => {
@@ -85,9 +95,11 @@ export const select = async (
 
   for (let first = true;; first = false) {
     const { code, output } = await fzf({
-      height: 20,
+      height: 25,
       cycle: true,
       prompt,
+      preview,
+      previewWindow: `up,${previewHeight}`,
     }, input);
 
     if (code === EXIT_CODE_ABORT) {
