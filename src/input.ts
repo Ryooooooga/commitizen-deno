@@ -5,6 +5,8 @@ import {
 } from "https://deno.land/std@0.121.0/fmt/colors.ts";
 import { EXIT_CODE_ABORT, fzf } from "./fzf.ts";
 
+const fzfHeight = 16;
+
 const displayDescription = (description: string) => {
   console.log(`${green("?")} ${description}`);
 };
@@ -40,11 +42,11 @@ export const input = async ({
 
   for (let first = true;; first = false) {
     const { code, output } = await fzf({
-      height: 25,
+      height: fzfHeight,
       printQuery: true,
       prompt,
       preview,
-      previewWindow: `up,${previewHeight}`,
+      previewWindow: `down,${previewHeight}`,
     });
 
     if (code === EXIT_CODE_ABORT) {
@@ -95,11 +97,11 @@ export const select = async (
 
   for (let first = true;; first = false) {
     const { code, output } = await fzf({
-      height: 25,
+      height: fzfHeight,
       cycle: true,
       prompt,
       preview,
-      previewWindow: `up,${previewHeight}`,
+      previewWindow: `down,${previewHeight}`,
     }, input);
 
     if (code === EXIT_CODE_ABORT) {

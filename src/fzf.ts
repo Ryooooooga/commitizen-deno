@@ -28,7 +28,7 @@ export const fzf = async ({
   // default options
   cmd.push("--ansi");
   cmd.push("--reverse");
-  cmd.push("--border");
+  cmd.push("--border=none");
 
   if (height !== undefined) {
     cmd.push("--height", `${height}`);
