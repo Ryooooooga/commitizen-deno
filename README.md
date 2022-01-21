@@ -25,12 +25,11 @@ git config --global alias.cz '!commitizen-deno --'
 ## Configuration
 
 ```yaml
-# ~/.config/commitizen-deno/.git-czrc
+# ~/.config/commitizen-deno/config.yaml
 message:
   items:
     - name: type
       description: Select the type of change that you're committing
-      prompt: "Type > "
       required: true
       form: select
       options:
@@ -59,18 +58,15 @@ message:
 
     - name: scope
       description: What is the scope of this change (e.g. component or file name)
-      prompt: "Scope > "
       form: input
 
     - name: subject
       description: Write a short, imperative tense description of the change
-      prompt: "Subject > "
       required: true
       form: input
 
     - name: detail
       description: Provide a longer description of the change
-      prompt: "Detail > "
       form: input
 
     - name: breakingChange
@@ -80,7 +76,6 @@ message:
 
     - name: issue
       description: 'Add issue references (e.g. "fix #123", "re #123".)'
-      prompt: "Issue > "
       form: input
 
   template: "<%- type %><% if (scope) { %>(<%- scope %>)<% } %>: <%- subject %><% if (detail) { %>\n\n<%- detail %><% } %><% if (breakingChange) { %>\n\nBREAKING CHANGE: <%- breakingChange %><% } %><% if (issue) { %>\n\n<%- issue %><% } %>"
