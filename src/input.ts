@@ -1,4 +1,5 @@
 import {
+  blue,
   green,
   red,
   stripColor,
@@ -17,7 +18,7 @@ const displayError = (message: string) => {
 
 const displayResult = (message: string) => {
   if (message.length > 0) {
-    console.log(message);
+    console.log(blue(message));
   }
 };
 
