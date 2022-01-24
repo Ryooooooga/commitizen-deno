@@ -80,3 +80,9 @@ message:
 
   template: "<%- type %><% if (scope) { %>(<%- scope %>)<% } %>: <%- subject %><% if (detail) { %>\n\n<%- detail %><% } %><% if (breakingChange) { %>\n\nBREAKING CHANGE: <%- breakingChange %><% } %><% if (issue) { %>\n\n<%- issue %><% } %>"
 ```
+
+## Related
+
+- [cz-cli](https://github.com/commitizen/cz-cli)
+- [git-cz](https://github.com/streamich/git-cz)
+- [commitizen-go](https://github.com/lintingzhen/commitizen-go)
