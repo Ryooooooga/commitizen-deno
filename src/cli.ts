@@ -52,9 +52,12 @@ const buildPreviewCommand = async (
   return { preview, previewHeight };
 };
 
-type Options = Record<never, never>;
+type Options = {
+  print?: boolean;
+  check?: boolean;
+};
 
-const execute = async (_options: Options, args: string[]) => {
+const execute = async (options: Options, args: string[]) => {
   if (!await git.isInsideRepository()) {
     throw new Error("not a git repository (or any of the parent directories)");
   }
@@ -62,7 +65,7 @@ const execute = async (_options: Options, args: string[]) => {
   const allowEmpty = args.includes("--allow-empty");
   const amendCommit = args.includes("--amend");
 
-  if (await git.isClean() && !allowEmpty && !amendCommit) {
+  if (options.check && !allowEmpty && !amendCommit && await git.isClean()) {
     throw new Error('nothing added to commit (use "git add")');
   }
 
@@ -129,7 +132,12 @@ const execute = async (_options: Options, args: string[]) => {
   }
 
   const message = await dejs.renderToString(config.message.template, results);
-  await git.commit(message, [...args]);
+
+  if (options.print === undefined) {
+    await git.commit(message, [...args]);
+  } else {
+    console.log(message);
+  }
 };
 
 export const run = async () => {
@@ -138,6 +146,8 @@ export const run = async () => {
       .name("commitizen-deno")
       .usage("[--] [args...]")
       .description("Commitizen client")
+      .option("-p, --print", "Display commit message")
+      .option("--no-check", "Skip Git status checking")
       .arguments("[args...]")
       .parse(Deno.args);
 

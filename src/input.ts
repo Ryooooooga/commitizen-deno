@@ -9,16 +9,16 @@ import { EXIT_CODE_ABORT, fzf } from "./fzf.ts";
 const fzfHeight = 16;
 
 const displayDescription = (description: string) => {
-  console.log(`${green("?")} ${description}`);
+  console.error(`${green("?")} ${description}`);
 };
 
 const displayError = (message: string) => {
-  console.log(red(`☓ ${message}`));
+  console.error(red(`☓ ${message}`));
 };
 
 const displayResult = (message: string) => {
   if (message.length > 0) {
-    console.log(blue(message));
+    console.error(blue(message));
   }
 };
 
