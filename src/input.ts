@@ -1,9 +1,4 @@
-import {
-  blue,
-  green,
-  red,
-  stripColor,
-} from "https://deno.land/std@0.121.0/fmt/colors.ts";
+import { blue, green, red, stripColor } from "std/fmt/colors.ts";
 import { EXIT_CODE_ABORT, fzf } from "./fzf.ts";
 
 const fzfHeight = 16;

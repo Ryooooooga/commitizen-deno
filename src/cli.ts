@@ -1,11 +1,7 @@
-import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
-import * as dejs from "https://deno.land/x/dejs@0.10.2/mod.ts";
-import {
-  cyan,
-  stripColor,
-  underline,
-} from "https://deno.land/std@0.121.0/fmt/colors.ts";
-import shellEscape from "https://deno.land/x/shell_escape@1.0.0/single-argument.ts";
+import { Command } from "cliffy/command/mod.ts";
+import * as dejs from "dejs/mod.ts";
+import { cyan, stripColor, underline } from "std/fmt/colors.ts";
+import shellEscape from "shell_escape/single-argument.ts";
 import { FormItem, loadConfig, SelectOption } from "./config.ts";
 import * as git from "./git.ts";
 import { input, select, Selection } from "./input.ts";
