@@ -1,2 +1,4 @@
-#!/usr/bin/env sh
-deno run --no-check --allow-run --allow-read --allow-env "$(dirname "$(realpath "$0")")/index.ts"
+#!/usr/bin/env -S deno run --no-check --allow-run --allow-read --allow-env
+import { run } from "./src/cli.ts";
+
+await run();
