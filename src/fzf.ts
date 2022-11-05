@@ -3,6 +3,8 @@ export const EXIT_CODE_EMPTY = 1;
 export const EXIT_CODE_ABORT = 130;
 
 export type FzfOptions = {
+  delimiter?: string;
+  withNth?: number;
   height?: number;
   bind?: string;
   preview?: string;
@@ -14,6 +16,8 @@ export type FzfOptions = {
 };
 
 export const fzf = async ({
+  delimiter,
+  withNth,
   height,
   bind,
   preview,
@@ -30,6 +34,12 @@ export const fzf = async ({
   cmd.push("--reverse");
   cmd.push("--border=none");
 
+  if (delimiter !== undefined) {
+    cmd.push("--delimiter", delimiter);
+  }
+  if (withNth !== undefined) {
+    cmd.push("--with-nth", `${withNth}`);
+  }
   if (height !== undefined) {
     cmd.push("--height", `${height}`);
   }

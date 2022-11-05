@@ -1,4 +1,4 @@
-import { blue, green, red, stripColor } from "std/fmt/colors.ts";
+import { blue, green, red } from "std/fmt/colors.ts";
 import { EXIT_CODE_ABORT, fzf } from "./fzf.ts";
 
 const fzfHeight = 16;
@@ -89,10 +89,14 @@ export const select = async (
   displayDescription(description);
 
   const input = selections
-    .map((s) => s.text).join("\n");
+    .map(({ value, text }) =>
+      `${value.replaceAll("\n", " ")}\0${text.replaceAll("\n", " ")}`
+    ).join("\n");
 
   for (let first = true;; first = false) {
     const { code, output } = await fzf({
+      delimiter: "\\0",
+      withNth: 2,
       height: fzfHeight,
       cycle: true,
       prompt,
@@ -104,10 +108,10 @@ export const select = async (
       return undefined;
     }
 
-    const result = output.trimEnd();
-    if (result.length > 0 || !required) {
+    const result = output.split("\0")[0];
+    if (result !== undefined || !required) {
       displayResult(result);
-      return selections.find((s) => stripColor(s.text).trimEnd() === result);
+      return selections.find((s) => s.value === result);
     }
 
     if (first) {
