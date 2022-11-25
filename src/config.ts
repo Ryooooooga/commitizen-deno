@@ -55,7 +55,7 @@ export const defaultConfig: Config = {
   message: {
     items: [
       {
-        name: "prefix",
+        name: "type",
         description: "Select the type of change that you're committing",
         required: true,
         form: "select",
