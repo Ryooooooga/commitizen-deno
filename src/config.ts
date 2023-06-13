@@ -1,4 +1,4 @@
-import { parse } from "std/encoding/yaml.ts";
+import { parse } from "std/yaml/mod.ts";
 
 export type Config = {
   message: {

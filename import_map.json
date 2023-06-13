@@ -1,7 +1,7 @@
 {
   "imports": {
-    "std/": "https://deno.land/std@0.159.0/",
-    "cliffy/": "https://deno.land/x/cliffy@v0.25.2/",
+    "std/": "https://deno.land/std@0.191.0/",
+    "cliffy/": "https://deno.land/x/cliffy@v0.25.7/",
     "dejs/": "https://deno.land/x/dejs@0.10.3/",
     "shell_escape/": "https://deno.land/x/shell_escape@1.0.0/"
   }
