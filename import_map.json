@@ -1,6 +1,6 @@
 {
   "imports": {
-    "std/": "https://deno.land/std@0.201.0/",
+    "std/": "https://deno.land/std@0.203.0/",
     "cliffy/": "https://deno.land/x/cliffy@v1.0.0-rc.3/",
     "dejs/": "https://deno.land/x/dejs@0.10.3/",
     "shell_escape/": "https://deno.land/x/shell_escape@1.0.0/"
