@@ -27,60 +27,57 @@ export const fzf = async ({
   cycle,
   printQuery,
 }: FzfOptions, input?: string) => {
-  const cmd = ["fzf"];
-
   // default options
-  cmd.push("--ansi");
-  cmd.push("--reverse");
-  cmd.push("--border=none");
+  const args = ["--ansi", "--reverse", "--border=none"];
 
   if (delimiter !== undefined) {
-    cmd.push("--delimiter", delimiter);
+    args.push("--delimiter", delimiter);
   }
   if (withNth !== undefined) {
-    cmd.push("--with-nth", `${withNth}`);
+    args.push("--with-nth", `${withNth}`);
   }
   if (height !== undefined) {
-    cmd.push("--height", `${height}`);
+    args.push("--height", `${height}`);
   }
   if (bind !== undefined) {
-    cmd.push("--bind", bind);
+    args.push("--bind", bind);
   }
   if (preview !== undefined) {
-    cmd.push("--preview", preview);
+    args.push("--preview", preview);
   }
   if (previewWindow !== undefined) {
-    cmd.push("--preview-window", previewWindow);
+    args.push("--preview-window", previewWindow);
   }
   if (header !== undefined) {
-    cmd.push("--header", header);
+    args.push("--header", header);
   }
   if (prompt !== undefined) {
-    cmd.push("--prompt", prompt);
+    args.push("--prompt", prompt);
   }
   if (cycle !== undefined) {
-    cmd.push("--cycle");
+    args.push("--cycle");
   }
   if (printQuery === true) {
-    cmd.push("--print-query");
+    args.push("--print-query");
   }
 
   const env = {
     FZF_DEFAULT_OPTS: "",
   };
 
-  const p = Deno.run({
-    cmd,
+  const child = new Deno.Command("fzf", {
+    args,
     env,
     stdin: "piped",
     stdout: "piped",
-  });
+  }).spawn();
 
-  p.stdin?.write(new TextEncoder().encode(input ?? "\n"));
-  p.stdin?.close();
+  const writer = child.stdin.getWriter();
+  writer.write(new TextEncoder().encode(input ?? "\n"));
+  writer.close();
 
-  const output = new TextDecoder().decode(await p.output());
-  const { success, code } = await p.status();
+  const { success, code, stdout } = await child.output();
+  const output = new TextDecoder().decode(stdout);
 
   return { success, code, output };
 };
