@@ -76,8 +76,8 @@ export const fzf = async ({
   writer.write(new TextEncoder().encode(input ?? "\n"));
   writer.close();
 
-  const output = new TextDecoder().decode((await child.output()).stdout);
-  const { success, code } = await child.status;
+  const { success, code, stdout } = await child.output();
+  const output = new TextDecoder().decode(stdout);
 
   return { success, code, output };
 };

@@ -4,9 +4,7 @@ export const isInsideRepository = async () => {
     stderr: "piped",
   });
 
-  const child = command.spawn();
-
-  const { success } = await child.status;
+  const { success } = await command.output();
   return success;
 };
 
@@ -15,9 +13,7 @@ export const isClean = async () => {
     args: ["diff", "--cached", "--quiet"],
   });
 
-  const child = command.spawn();
-
-  const { success } = await child.status;
+  const { success } = await command.output();
   return success;
 };
 
@@ -26,8 +22,6 @@ export const commit = async (message: string, args: string[] = []) => {
     args: ["commit", "-m", message, ...args],
   });
 
-  const child = command.spawn();
-
-  const { success } = await child.status;
+  const { success } = await command.output();
   return success;
 };
